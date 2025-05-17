@@ -1,0 +1,285 @@
+{
+  "intents": [
+    {
+      "intent": "encerrar",
+      "examples": [
+        {
+          "text": "encerrar conversa"
+        },
+        {
+          "text": "essa conversa chegou ao fim"
+        },
+        {
+          "text": "Quero encerrar o atendimento"
+        },
+        {
+          "text": "Sair"
+        },
+        {
+          "text": "terminar conversa"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "menu",
+      "examples": [
+        {
+          "text": "bom dia"
+        },
+        {
+          "text": "ola"
+        },
+        {
+          "text": "opa"
+        },
+        {
+          "text": "preciso de ajuda"
+        },
+        {
+          "text": "quero fazer um atendimento"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "status_pedido",
+      "examples": [
+        {
+          "text": "gostaria de saber o status do meu pedido"
+        },
+        {
+          "text": "Onde está minha encomenda?"
+        },
+        {
+          "text": "qual andamento da minha entrega"
+        },
+        {
+          "text": "quero saber sobre minha encomenda"
+        },
+        {
+          "text": "Quero ver o status do pedido"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "suporte_tecnico",
+      "examples": [
+        {
+          "text": "Ajuda com erro"
+        },
+        {
+          "text": "como posso resolver meu problema?"
+        },
+        {
+          "text": "esta dando erro"
+        },
+        {
+          "text": "preciso de ajuda tecnica"
+        },
+        {
+          "text": "Quero falar com o suporte técnico"
+        },
+        {
+          "text": "suporte"
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "entities": [],
+  "metadata": {
+    "api_version": {
+      "major_version": "v2",
+      "minor_version": "2018-11-08"
+    }
+  },
+  "dialog_nodes": [
+    {
+      "type": "standard",
+      "title": "Início",
+      "output": {
+        "generic": [
+          {
+            "title": "Como posso te ajudar?",
+            "options": [
+              {
+                "label": "Falar com Suporte Técnico",
+                "value": {
+                  "input": {
+                    "text": "suporte"
+                  }
+                }
+              },
+              {
+                "label": "Verificar Status do Pedido",
+                "value": {
+                  "input": {
+                    "text": "status"
+                  }
+                }
+              },
+              {
+                "label": "Encerrar Atendimento",
+                "value": {
+                  "input": {
+                    "text": "encerrar"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "conditions": "#menu",
+      "dialog_node": "Bem-vindo",
+      "previous_sibling": "node_4_1747510728999"
+    },
+    {
+      "type": "standard",
+      "title": "Em outros casos",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Eu não entendi. Você pode tentar reformular a frase."
+              },
+              {
+                "text": "Você pode reformular sua afirmação? Eu não estou entendendo."
+              },
+              {
+                "text": "Eu não entendi o sentido."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "anything_else",
+      "dialog_node": "Em outros casos",
+      "previous_sibling": "node_8_1747336953421",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "Resposta - Suporte Técnico",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Você será redirecionado para o suporte técnico..."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {
+        "_customization": {
+          "mcr": false
+        }
+      },
+      "conditions": "input.text == 'suporte'",
+      "dialog_node": "node_10_1747336650809",
+      "previous_sibling": "Bem-vindo"
+    },
+    {
+      "type": "standard",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_3_1747438740752"
+    },
+    {
+      "type": "standard",
+      "title": "Resposta - Encerrar",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Atendimento encerrado. Obrigado por conversar com a gente! 😊"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "input.text == 'encerrar'",
+      "dialog_node": "node_4_1747336952097",
+      "previous_sibling": "node_10_1747336650809"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Olá, como posso te ajudar?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "welcome",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_4_1747510728999",
+      "previous_sibling": "node_3_1747438740752"
+    },
+    {
+      "type": "standard",
+      "title": "Resposta - Status do Pedido",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Seu pedido está em processamento e será enviado em breve. Se quiser rastrear, acesse: www.minhaloja.com/rastreio"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "input.text == 'status'",
+      "dialog_node": "node_8_1747336953421",
+      "previous_sibling": "node_4_1747336952097"
+    },
+    {
+      "type": "response_condition",
+      "output": {},
+      "parent": "node_10_1747336650809",
+      "disabled": true,
+      "dialog_node": "response_7_1747336685968"
+    }
+  ],
+  "counterexamples": [],
+  "system_settings": {
+    "disambiguation": {
+      "prompt": "Você quis dizer:",
+      "enabled": true,
+      "randomize": true,
+      "max_suggestions": 5,
+      "suggestion_text_policy": "title",
+      "none_of_the_above_prompt": "Nenhuma das anteriores",
+      "use_connect_to_support_prompt": "Connect to support",
+      "single_answer_clarification_prompt": "Something else"
+    },
+    "human_agent_assist": {
+      "prompt": "Você quis dizer:"
+    }
+  },
+  "learning_opt_out": false,
+  "language": "pt-br",
+  "description": "",
+  "name": "Central de Atendimento Digital-dialog"
+}
